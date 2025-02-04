@@ -19,6 +19,12 @@ type Note = {
     tags: Tag[]
 }
 
+type NoteData = {
+    title: string
+    markdown: string
+    tags: Tag[]
+}
+
 type Tag = {
     id: string
     project_id: string
@@ -30,6 +36,12 @@ type Tag = {
 type Todo = {
     id: string
     project_id: string
+    task: string
+    isCompleted: boolean
+    deadline: string // this is a date.
+}
+
+type TodoData = {
     task: string
     isCompleted: boolean
     deadline: string // this is a date.

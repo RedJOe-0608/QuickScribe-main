@@ -1,6 +1,3 @@
-import { rejects } from "assert";
-import { resolve } from "path";
-import { v4 as uuidV4 } from "uuid"
 
 // indexDB configuration
 const DB_NAME = 'QuickScribeDB';
@@ -24,20 +21,20 @@ const initDB = (): Promise<IDBDatabase> => {
 
             const db = (event.target as IDBOpenDBRequest).result
 
-            if(!db.objectStoreNames.contains("PROJECTS_STORE")) {
-                db.createObjectStore("PROJECTS_STORE",{keyPath: 'id'})
+            if(!db.objectStoreNames.contains(PROJECTS_STORE)) {
+                db.createObjectStore(PROJECTS_STORE,{keyPath: 'id'})
             }
 
-            if(!db.objectStoreNames.contains("NOTES_STORE")) {
-                const notesStore = db.createObjectStore("NOTES_STORE",{keyPath: 'id'})
+            if(!db.objectStoreNames.contains(NOTES_STORE)) {
+                const notesStore = db.createObjectStore(NOTES_STORE,{keyPath: 'id'})
                 notesStore.createIndex("project_id","project_id",{unique: false})
             }
-            if(!db.objectStoreNames.contains("TAGS_STORE")) {
-                const notesStore = db.createObjectStore("TAGS_STORE",{keyPath: 'id'})
+            if(!db.objectStoreNames.contains(TAGS_STORE)) {
+                const notesStore = db.createObjectStore(TAGS_STORE,{keyPath: 'id'})
                 notesStore.createIndex("project_id","project_id",{unique: false})
             }
-            if(!db.objectStoreNames.contains("TODOS_STORE")) {
-                const notesStore = db.createObjectStore("TODOS_STORE",{keyPath: 'id'})
+            if(!db.objectStoreNames.contains(TODOS_STORE)) {
+                const notesStore = db.createObjectStore(TODOS_STORE,{keyPath: 'id'})
                 notesStore.createIndex("project_id","project_id",{unique: false})
             }
         }
@@ -59,7 +56,7 @@ const getAllProjects = async ():Promise<Project[]> => {
 }
 
 // the items can be todos or notes or tags
-const getItemsByProjectId = async(storeName: string, projectId: string): Promise<any[]> => {
+const getItemsByProjectId = async(storeName: string, projectId: string | undefined): Promise<any[]> => {
     const db = await initDB()
 
     return new Promise((resolve, reject) => {
@@ -117,7 +114,3 @@ const deleteItem = async(storeName: string, id: string): Promise<void> => {
         request.onsuccess = () => resolve()
     })
 }
-
-
-
-
