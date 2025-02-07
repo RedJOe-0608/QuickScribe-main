@@ -2,12 +2,12 @@
 // indexDB configuration
 const DB_NAME = 'QuickScribeDB';
 const DB_VERSION = 1;
-const PROJECTS_STORE = 'projects';
-const NOTES_STORE = 'notes';
-const TAGS_STORE = 'tags';
-const TODOS_STORE = 'todos';
+export const PROJECTS_STORE = 'projects';
+export const NOTES_STORE = 'notes';
+export const TAGS_STORE = 'tags';
+export const TODOS_STORE = 'todos';
 
-const initDB = (): Promise<IDBDatabase> => {
+export const initDB = (): Promise<IDBDatabase> => {
 
     return new Promise((resolve, reject) => {
     
@@ -41,12 +41,12 @@ const initDB = (): Promise<IDBDatabase> => {
     })
 }
 
-const getAllProjects = async ():Promise<Project[]> => {
+export const getAllProjects = async ():Promise<Project[]> => {
     const db = await initDB()
 
     return new Promise((resolve,reject) => {
-        const transaction = db.transaction("PROJECTS_STORE","readonly")
-        const store = transaction.objectStore("PROJECTS_STORE")
+        const transaction = db.transaction(PROJECTS_STORE,"readonly")
+        const store = transaction.objectStore(PROJECTS_STORE)
 
         const request = store.getAll()
 
@@ -56,7 +56,7 @@ const getAllProjects = async ():Promise<Project[]> => {
 }
 
 // the items can be todos or notes or tags
-const getItemsByProjectId = async(storeName: string, projectId: string | undefined): Promise<any[]> => {
+export const getItemsByProjectId = async(storeName: string, projectId: string | undefined): Promise<any[]> => {
     const db = await initDB()
 
     return new Promise((resolve, reject) => {
@@ -71,7 +71,7 @@ const getItemsByProjectId = async(storeName: string, projectId: string | undefin
     })
 }
 
-const addItem = async(storeName: string,item: any): Promise<void> => {
+export const addItem = async(storeName: string,item: any): Promise<void> => {
     
     const db = await initDB()
 
@@ -86,7 +86,7 @@ const addItem = async(storeName: string,item: any): Promise<void> => {
     })
 }
 
-const updateItem = async(storeName:string, item: any): Promise<void> => {
+export const updateItem = async(storeName:string, item: any): Promise<void> => {
     const db = await initDB()
 
     return new Promise((resolve,reject) => {
@@ -100,7 +100,7 @@ const updateItem = async(storeName:string, item: any): Promise<void> => {
     })
 }
 
-const deleteItem = async(storeName: string, id: string): Promise<void> => {
+export const deleteItem = async(storeName: string, id: string): Promise<void> => {
 
     const db = await initDB()
 

@@ -1,10 +1,12 @@
 "use client"
 
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState, } from "react";
 import { v4 as uuidV4 } from "uuid"
+import {addItem, deleteItem, getAllProjects, getItemsByProjectId, NOTES_STORE, PROJECTS_STORE, TAGS_STORE, TODOS_STORE, updateItem } from '../db/db';
 
 type NoteContextType = {
     projects: Project[]
+    isLoading: boolean 
     notes: Note[]
     tags: Tag[]
     todos: Todo[]
@@ -32,6 +34,22 @@ export function NoteProvider({children} : {children: React.ReactNode}) {
     const [tags,setTags] = useState<Tag[]>([])
     const [todos,setTodos] = useState<Todo[]>([])
     const [currentProject, setCurrentProject] = useState<Project | null>(null)
+    const [isLoading,setIsLoading] = useState(true)
+
+    //this useEffect runs on initial render.
+    useEffect(() => {
+      
+            const getProjects = async() => {
+            
+                const allProjects = await getAllProjects()
+                setProjects(allProjects)
+                setIsLoading(false)
+            }
+
+            getProjects()
+        
+
+    },[])
 
     const handleSetCurrentProject = async() => {
 
@@ -284,6 +302,7 @@ export function NoteProvider({children} : {children: React.ReactNode}) {
         <AppContext.Provider
           value={{
             projects,
+            isLoading,
             currentProject,
             notes,
             tags,
